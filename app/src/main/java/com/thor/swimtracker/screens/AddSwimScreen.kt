@@ -59,6 +59,8 @@ fun AddSwimScreen(
     ) {
         Text(stringResource(R.string.enter_a_number))
 
+        Spacer(modifier = Modifier.height(12.dp))
+        
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()

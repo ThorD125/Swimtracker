@@ -39,13 +39,13 @@ private val DateFmt = DateTimeFormatter.ofPattern("dd_MM_yyyy")
 private fun parseDate(d: String): LocalDate =
     runCatching { LocalDate.parse(d, DateFmt) }.getOrNull() ?: LocalDate.now()
 
-private enum class ChartRange(val key: String, val label: String) {
+public enum class ChartRange(val key: String, val label: String) {
     WEEK("WEEK", "Last 7d"),
     MONTH("MONTH", "Last 30d"),
     ALL("ALL", "All")
 }
 
-private val Context.dataStore by preferencesDataStore(name = "chart_prefs")
+public val Context.dataStore by preferencesDataStore(name = "chart_prefs")
 private val RANGE_KEY = stringPreferencesKey("chart_range")
 
 private fun Int.niceStep(maxValue: Float): Float {
