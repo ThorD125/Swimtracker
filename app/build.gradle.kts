@@ -65,17 +65,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation("androidx.navigation:navigation-compose:2.9.3")
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation(platform("androidx.compose:compose-bom:2025.01.00"))
+    implementation("androidx.room:room-runtime:2.7.2")
+    implementation("androidx.room:room-ktx:2.7.2")
+    implementation(platform("androidx.compose:compose-bom:2025.07.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.runtime:runtime")
     implementation("androidx.compose.runtime:runtime-saveable")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    ksp("androidx.room:room-compiler:2.7.2")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 
 
 }
