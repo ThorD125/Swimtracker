@@ -23,7 +23,6 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.pow
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -39,13 +38,13 @@ private val DateFmt = DateTimeFormatter.ofPattern("dd_MM_yyyy")
 private fun parseDate(d: String): LocalDate =
     runCatching { LocalDate.parse(d, DateFmt) }.getOrNull() ?: LocalDate.now()
 
-public enum class ChartRange(val key: String, val label: String) {
+enum class ChartRange(val key: String, val label: String) {
     WEEK("WEEK", "Last 7d"),
     MONTH("MONTH", "Last 30d"),
     ALL("ALL", "All")
 }
 
-public val Context.dataStore by preferencesDataStore(name = "chart_prefs")
+val Context.dataStore by preferencesDataStore(name = "chart_prefs")
 private val RANGE_KEY = stringPreferencesKey("chart_range")
 
 private fun Int.niceStep(maxValue: Float): Float {
@@ -248,7 +247,7 @@ private fun LineChartCanvas(
             )
 
             points.forEach { (d, v) ->
-                val x = xFor(d);
+                val x = xFor(d)
                 val y = yFor(v)
                 drawCircle(color = pointColor, radius = 5f, center = Offset(x, y))
             }
