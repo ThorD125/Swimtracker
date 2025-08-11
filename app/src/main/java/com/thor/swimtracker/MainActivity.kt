@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -26,15 +27,15 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "home",
+                        startDestination = stringResource(R.string.home),
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable("home") {
+                        composable(getString(R.string.home)) {
                             HomeScreen(
-                                onNavigate = { navController.navigate("AddSwimScreen") }
+                                onNavigate = { navController.navigate(getString(R.string.addswimscreen)) }
                             )
                         }
-                        composable("AddSwimScreen") {
+                        composable(getString(R.string.addswimscreen)) {
                             AddSwimScreen(
                                 onBack = { navController.popBackStack() }
                             )

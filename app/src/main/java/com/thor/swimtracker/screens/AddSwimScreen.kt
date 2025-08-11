@@ -16,8 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.thor.swimtracker.R
 import com.thor.swimtracker.data.NumberViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -36,7 +38,7 @@ fun AddSwimScreen(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text("Enter a number")
+        Text(stringResource(R.string.enter_a_number))
 
         TextField(
             value = numberText,
@@ -66,7 +68,7 @@ fun AddSwimScreen(
                 onBack()
             }
         ) {
-            Text("Save")
+            Text(stringResource(R.string.save))
         }
     }
 }

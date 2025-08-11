@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Swim Tracker</string>
+    <string name="add_swim">Add Swim</string>
+    <string name="enter_a_number">Enter a number</string>
+    <string name="save">Save</string>
+    <string name="notification_title">Did you swim?</string>
+    <string name="notification_message">If so pls fill in!</string>
+    <string name="swim_tracker">Swim Tracker</string>
+    <string name="time_to_swim">Time to swim!</string>
 </resources>

@@ -10,7 +10,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.thor.swimtracker.R
 import com.thor.swimtracker.data.NumberViewModel
 import com.thor.swimtracker.notifications.scheduleNotificationAt
 import com.thor.swimtracker.screens.components.graph.LineChart
@@ -28,7 +30,7 @@ fun HomeScreen(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text("Swim Tracker:")
+        Text(stringResource(R.string.swim_tracker))
 
         LineChart(
             entries = entries.map { NumberEntryUi(it.value, it.date) },
@@ -38,7 +40,7 @@ fun HomeScreen(
         )
 
         Button(onClick = onNavigate) {
-            Text("Add Swim")
+            Text(stringResource(R.string.add_swim))
         }
     }
 
@@ -72,7 +74,18 @@ fun HomeScreen(
 //            "do it work!"
 //        )
 //    }
-    scheduleNotificationAt(context, 12, 0, "Did you swim?", "If so pls fill in!")
-    scheduleNotificationAt(context, 19, 0, "Did you swim?", "If so pls fill in!")
+    scheduleNotificationAt(
+        context, 12,
+        0,
+        stringResource(R.string.notification_title),
+        stringResource(R.string.notification_message)
+    )
+    scheduleNotificationAt(
+        context,
+        19,
+        0,
+        stringResource(R.string.notification_title),
+        stringResource(R.string.notification_message)
+    )
 
 }
