@@ -1,7 +1,12 @@
 package com.thor.swimtracker.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -9,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -17,6 +23,7 @@ import com.thor.swimtracker.data.NumberViewModel
 import com.thor.swimtracker.notifications.scheduleNotificationAt
 import com.thor.swimtracker.screens.components.graph.LineChart
 import com.thor.swimtracker.screens.components.graph.NumberEntryUi
+import java.nio.file.WatchEvent
 
 @Composable
 fun HomeScreen(
@@ -28,19 +35,26 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(20.dp)
     ) {
         Text(stringResource(R.string.swim_tracker))
 
         LineChart(
             entries = entries.map { NumberEntryUi(it.value, it.date) },
+//            modifier = Modifier.weight(1f, fill = true)
+        )
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f, fill = true)
-        )
-
-        Button(onClick = onNavigate) {
-            Text(stringResource(R.string.add_swim))
+                .fillMaxHeight()
+//                .background(Color.LightGray)
+        ) {
+            Spacer(Modifier.weight(1f))
+            Button(
+                onClick = onNavigate
+            ) {
+                Text(stringResource(R.string.add_swim))
+            }
         }
     }
 

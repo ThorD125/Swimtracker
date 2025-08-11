@@ -1,10 +1,13 @@
 package com.thor.swimtracker.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -17,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -55,15 +59,42 @@ fun AddSwimScreen(
     ) {
         Text(stringResource(R.string.enter_a_number))
 
-        TextField(
-            value = numberText,
-            onValueChange = { input ->
-                if (input.all(Char::isDigit)) numberText = input
-            },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Button(
+                onClick = {
+                    val current = numberText.toIntOrNull() ?: 0
+                    numberText = (current - 1).toString()
+                }
+            ) {
+                Text("-")
+            }
+
+            Spacer(Modifier.width(12.dp))
+
+            TextField(
+                value = numberText,
+                onValueChange = { input ->
+                    if (input.all(Char::isDigit)) numberText = input
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.weight(1f) // takes all remaining space
+            )
+
+            Spacer(Modifier.width(12.dp))
+
+            Button(
+                onClick = {
+                    val current = numberText.toIntOrNull() ?: 0
+                    numberText = (current + 1).toString()
+                }
+            ) {
+                Text("+")
+            }
+        }
 
         Spacer(Modifier.height(12.dp))
 

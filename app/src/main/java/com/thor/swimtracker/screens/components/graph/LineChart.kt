@@ -23,6 +23,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.pow
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -126,7 +127,7 @@ fun LineChart(
     }
 
     Column(modifier) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             RangeChip(current = range!!, target = ChartRange.WEEK) { selectRange(it) }
             RangeChip(current = range!!, target = ChartRange.MONTH) { selectRange(it) }
             RangeChip(current = range!!, target = ChartRange.ALL) { selectRange(it) }
@@ -192,17 +193,12 @@ private fun LineChartCanvas(
         if (last() < yMax) add(yMax.toFloat())
     }
 
-    val leftPad = 56.dp
-    val rightPad = 16.dp
-    val topPad = 16.dp
-    val bottomPad = 40.dp
-
     val composeDensity = androidx.compose.ui.platform.LocalDensity.current
 
     Column {
         Canvas(
             modifier = modifier
-                .padding(start = leftPad, end = rightPad, top = topPad, bottom = bottomPad)
+                .padding(22.dp)
         ) {
             val w = size.width
             val h = size.height
