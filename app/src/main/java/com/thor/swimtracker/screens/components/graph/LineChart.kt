@@ -60,6 +60,7 @@ private fun Int.niceStep(maxValue: Float): Float {
     }
     return niceBase * pow10
 }
+
 private fun niceCeil(value: Float, step: Float): Float {
     if (step == 0f) return value
     val n = ceil(value / step)
@@ -82,7 +83,7 @@ fun LineChart(
         appContext.dataStore.data.map { prefs ->
             when (prefs[RANGE_KEY]) {
                 ChartRange.WEEK.key -> ChartRange.WEEK
-                ChartRange.ALL.key  -> ChartRange.ALL
+                ChartRange.ALL.key -> ChartRange.ALL
                 ChartRange.MONTH.key -> ChartRange.MONTH
                 else -> ChartRange.MONTH
             }
@@ -115,9 +116,9 @@ fun LineChart(
             val pts = entries.map { parseDate(it.date) to it.value }.sortedBy { it.first }
             val maxDate = pts.last().first
             val cutoff = when (range!!) {
-                ChartRange.WEEK  -> maxDate.minusDays(6)
+                ChartRange.WEEK -> maxDate.minusDays(6)
                 ChartRange.MONTH -> maxDate.minusDays(29)
-                ChartRange.ALL   -> pts.first().first
+                ChartRange.ALL -> pts.first().first
             }
             pts.filter { it.first >= cutoff }
                 .map { NumberEntryUi(it.second, it.first.format(DateFmt)) }
@@ -126,9 +127,9 @@ fun LineChart(
 
     Column(modifier) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            RangeChip(current = range!!, target = ChartRange.WEEK)  { selectRange(it) }
+            RangeChip(current = range!!, target = ChartRange.WEEK) { selectRange(it) }
             RangeChip(current = range!!, target = ChartRange.MONTH) { selectRange(it) }
-            RangeChip(current = range!!, target = ChartRange.ALL)   { selectRange(it) }
+            RangeChip(current = range!!, target = ChartRange.ALL) { selectRange(it) }
         }
         Spacer(Modifier.height(8.dp))
 
@@ -160,11 +161,6 @@ private fun RangeChip(
     )
 }
 
-/** The canvas drawing from your previous version, plus:
- *  - 15% headroom on Y
- *  - Y-axis labels and grid
- *  - X-axis date labels
- */
 @Composable
 private fun LineChartCanvas(
     entries: List<NumberEntryUi>,
@@ -190,7 +186,9 @@ private fun LineChartCanvas(
     val yStep = 4.niceStep(yMax.toFloat())
     val yTicks = buildList {
         var v = 0f
-        while (v <= yMax + 0.001f) { add(v); v += yStep }
+        while (v <= yMax + 0.001f) {
+            add(v); v += yStep
+        }
         if (last() < yMax) add(yMax.toFloat())
     }
 
@@ -213,6 +211,7 @@ private fun LineChartCanvas(
                 val daysFromStart = ChronoUnit.DAYS.between(minDate, date).toFloat()
                 return if (totalDays == 0L) 0f else (daysFromStart / totalDays) * w
             }
+
             fun yFor(value: Int): Float {
                 val ratio = value.toFloat() / yMax.toFloat()
                 return h - (ratio * h)
@@ -253,7 +252,8 @@ private fun LineChartCanvas(
             )
 
             points.forEach { (d, v) ->
-                val x = xFor(d); val y = yFor(v)
+                val x = xFor(d);
+                val y = yFor(v)
                 drawCircle(color = pointColor, radius = 5f, center = Offset(x, y))
             }
 

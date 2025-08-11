@@ -1,8 +1,6 @@
 // app/src/main/java/com/thor/swimtracker/MainActivity.kt
 package com.thor.swimtracker
 
-import android.Manifest
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

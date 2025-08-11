@@ -40,33 +40,39 @@ fun HomeScreen(
         Button(onClick = onNavigate) {
             Text("Add Swim")
         }
-
-//        val context = LocalContext.current
-//        Button(onClick = {
-//            com.thor.swimtracker.notifications.NotificationHelper.ensureChannel(context)
-//            com.thor.swimtracker.notifications.NotificationHelper.sendNow(
-//                context,
-//                "Test from Home",
-//                "If you see this, notifications work 🎉"
-//            )
-//        }) { Text("Post test notification now") }
-        val context = LocalContext.current
-
-//        val now = java.util.Calendar.getInstance()
-//        val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
-//        val currentMinute = now.get(java.util.Calendar.MINUTE)
-//
-//        for (i in 0..9) {
-//            val targetMinute = (currentMinute + i) % 60
-//            val targetHour = (currentHour + (currentMinute + i) / 60) % 24
-
-//        scheduleNotificationAt(context,targetHour,targetMinute,"the fukcing title?","do it work!")
-//        }
-        scheduleNotificationAt(context,12,0,"Did you swim?","If so pls fill in!")
-        scheduleNotificationAt(context,19,0,"Did you swim?","If so pls fill in!")
-
-//        Button(onClick = { viewModel.addTestEntries() }) {
-//            Text("Add Test Entries")
-//        }
     }
+
+//    Button(onClick = { viewModel.addTestEntries() }) {
+//        Text("Add Test Entries")
+//    }
+
+    val context = LocalContext.current
+//    Button(onClick = {
+//        com.thor.swimtracker.notifications.NotificationHelper.ensureChannel(context)
+//        com.thor.swimtracker.notifications.NotificationHelper.sendNow(
+//            context,
+//            "Test from Home",
+//            "If you see this, notifications work 🎉"
+//        )
+//    }) { Text("Post test notification now") }
+//
+//    val now = java.util.Calendar.getInstance()
+//    val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
+//    val currentMinute = now.get(java.util.Calendar.MINUTE)
+//
+//    for (i in 0..9) {
+//        val targetMinute = (currentMinute + i) % 60
+//        val targetHour = (currentHour + (currentMinute + i) / 60) % 24
+//
+//        scheduleNotificationAt(
+//            context,
+//            targetHour,
+//            targetMinute,
+//            "the fukcing title?",
+//            "do it work!"
+//        )
+//    }
+    scheduleNotificationAt(context, 12, 0, "Did you swim?", "If so pls fill in!")
+    scheduleNotificationAt(context, 19, 0, "Did you swim?", "If so pls fill in!")
+
 }
