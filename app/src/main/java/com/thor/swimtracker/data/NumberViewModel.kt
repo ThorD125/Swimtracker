@@ -20,6 +20,8 @@ class NumberViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun entryForDate(date: String): Flow<NumberEntry?> = dao.observeByDate(date)
+
     fun addTestEntries() {
         val sdf = SimpleDateFormat("dd_MM_yyyy", Locale.getDefault())
         val cal = Calendar.getInstance()

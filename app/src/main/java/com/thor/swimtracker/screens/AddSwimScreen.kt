@@ -10,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,19 @@ fun AddSwimScreen(
 ) {
     var numberText by rememberSaveable { mutableStateOf("") }
     var navigated by remember { mutableStateOf(false) }
+
+    val today = remember {
+        SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(Date())
+    }
+
+    // Observe database value for today
+    val todayEntry by viewModel.entryForDate(today).collectAsState(initial = null)
+
+    LaunchedEffect(todayEntry) {
+        if (todayEntry != null && numberText.isEmpty()) {
+            numberText = todayEntry?.value?.toString() ?: ""
+        }
+    }
 
     Column(
         modifier = Modifier
