@@ -8,6 +8,7 @@ import java.util.Calendar
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.core.net.toUri
 
 fun scheduleNotificationAt(context: Context, hour: Int, minute: Int, title: String, text: String) {
     val am = context.getSystemService(AlarmManager::class.java)
@@ -17,7 +18,7 @@ fun scheduleNotificationAt(context: Context, hour: Int, minute: Int, title: Stri
     ) {
         // Send user to “Alarms & reminders” screen for this app
         val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
         context.startActivity(intent)

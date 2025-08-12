@@ -1,9 +1,10 @@
 package com.thor.swimtracker.notifications
 
+import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.os.Build
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.thor.swimtracker.MainActivity
@@ -13,18 +14,17 @@ object NotificationHelper {
     const val CHANNEL_ID = "swim_reminders"
 
     fun ensureChannel(context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "Swim reminders",
-                NotificationManager.IMPORTANCE_DEFAULT
-            ).apply { description = "Reminders to log your swims" }
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            "Swim reminders",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply { description = "Reminders to log your swims" }
 
-            val nm = context.getSystemService(NotificationManager::class.java)
-            nm.createNotificationChannel(channel)
-        }
+        val nm = context.getSystemService(NotificationManager::class.java)
+        nm.createNotificationChannel(channel)
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun sendNow(context: Context, title: String, text: String) {
         // Tap opens the app
         val tapIntent = Intent(context, MainActivity::class.java).apply {
