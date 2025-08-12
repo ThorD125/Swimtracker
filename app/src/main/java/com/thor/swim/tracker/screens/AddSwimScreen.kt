@@ -1,4 +1,4 @@
-package com.thor.swimtracker.screens
+package com.thor.swim.tracker.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.thor.swimtracker.R
-import com.thor.swimtracker.data.NumberViewModel
+import com.thor.swim.tracker.R
+import com.thor.swim.tracker.data.NumberViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -42,7 +42,6 @@ fun AddSwimScreen(
         SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(Date())
     }
 
-    // Observe database value for today
     val todayEntry by viewModel.entryForDate(today).collectAsState(initial = null)
 
     LaunchedEffect(todayEntry) {

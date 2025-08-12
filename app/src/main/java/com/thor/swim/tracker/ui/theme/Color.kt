@@ -1,4 +1,4 @@
-package com.thor.swimtracker.ui.theme
+package com.thor.swim.tracker.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

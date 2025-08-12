@@ -1,4 +1,4 @@
-package com.thor.swimtracker.data
+package com.thor.swim.tracker.data
 
 import android.content.Context
 import androidx.room.Database
@@ -10,7 +10,8 @@ abstract class AppDb : RoomDatabase() {
     abstract fun numberDao(): NumberDao
 
     companion object {
-        @Volatile private var INSTANCE: AppDb? = null
+        @Volatile
+        private var INSTANCE: AppDb? = null
         fun get(context: Context): AppDb =
             INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(context, AppDb::class.java, "app.db")

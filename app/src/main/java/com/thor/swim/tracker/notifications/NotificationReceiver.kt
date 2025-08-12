@@ -1,11 +1,11 @@
-package com.thor.swimtracker.notifications
+package com.thor.swim.tracker.notifications
 
 import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.annotation.RequiresPermission
-import com.thor.swimtracker.R
+import com.thor.swim.tracker.R
 
 class NotificationReceiver : BroadcastReceiver() {
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)

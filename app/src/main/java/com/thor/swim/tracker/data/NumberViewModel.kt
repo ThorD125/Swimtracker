@@ -1,4 +1,4 @@
-package com.thor.swimtracker.data
+package com.thor.swim.tracker.data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -1,4 +1,4 @@
-package com.thor.swimtracker.notifications
+package com.thor.swim.tracker.notifications
 
 import android.Manifest
 import android.app.*
@@ -7,8 +7,8 @@ import android.content.Intent
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.thor.swimtracker.MainActivity
-import com.thor.swimtracker.R
+import com.thor.swim.tracker.MainActivity
+import com.thor.swim.tracker.R
 
 object NotificationHelper {
     const val CHANNEL_ID = "swim_reminders"
@@ -26,7 +26,6 @@ object NotificationHelper {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     fun sendNow(context: Context, title: String, text: String) {
-        // Tap opens the app
         val tapIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -38,7 +37,6 @@ object NotificationHelper {
         )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            // Use your own small icon if you have one
             .setSmallIcon(R.drawable.ic_launcher_foreground) // fallback: android.R.drawable.ic_dialog_info
             .setContentTitle(title)
             .setContentText(text)

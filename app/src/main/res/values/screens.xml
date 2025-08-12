@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home">home</string>
-    <string name="addswimscreen">AddSwimScreen</string>
+    <string name="screen_home">home</string>
+    <string name="screen_add_swim">AddSwimScreen</string>
+    <string name="screen_test">TestScreen</string>
 </resources>

@@ -1,5 +1,4 @@
-// app/src/main/java/com/thor/swimtracker/MainActivity.kt
-package com.thor.swimtracker
+package com.thor.swim.tracker
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,9 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.thor.swimtracker.screens.HomeScreen
-import com.thor.swimtracker.screens.AddSwimScreen
-import com.thor.swimtracker.ui.theme.MyApplicationTheme
+import com.thor.swim.tracker.screens.HomeScreen
+import com.thor.swim.tracker.screens.AddSwimScreen
+import com.thor.swim.tracker.screens.TestScreen
+import com.thor.swim.tracker.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,16 +27,22 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = stringResource(R.string.home),
+                        startDestination = stringResource(R.string.screen_home),
+//                        startDestination = stringResource(R.screens.test),
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable(getString(R.string.home)) {
+                        composable(getString(R.string.screen_home)) {
                             HomeScreen(
-                                onNavigate = { navController.navigate(getString(R.string.addswimscreen)) }
+                                onNavigate = { navController.navigate(getString(R.string.screen_add_swim)) }
                             )
                         }
-                        composable(getString(R.string.addswimscreen)) {
+                        composable(getString(R.string.screen_add_swim)) {
                             AddSwimScreen(
+                                onBack = { navController.popBackStack() }
+                            )
+                        }
+                        composable(getString(R.string.screen_test)) {
+                            TestScreen(
                                 onBack = { navController.popBackStack() }
                             )
                         }

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.thor.swimtracker"
+    namespace = "com.thor.swim.tracker"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.thor.swimtracker"
+        applicationId = "com.thor.swim.tracker"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

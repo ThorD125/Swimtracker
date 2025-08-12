@@ -1,4 +1,4 @@
-package com.thor.swimtracker.screens
+package com.thor.swim.tracker.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,13 +17,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.thor.swimtracker.R
-import com.thor.swimtracker.data.NumberViewModel
-import com.thor.swimtracker.notifications.scheduleNotificationAt
-import com.thor.swimtracker.screens.components.graph.ChartRange
-import com.thor.swimtracker.screens.components.graph.LineChart
-import com.thor.swimtracker.screens.components.graph.NumberEntryUi
-import com.thor.swimtracker.screens.components.graph.dataStore
+import com.thor.swim.tracker.R
+import com.thor.swim.tracker.data.NumberViewModel
+import com.thor.swim.tracker.notifications.scheduleNotificationAt
+import com.thor.swim.tracker.screens.components.graph.ChartRange
+import com.thor.swim.tracker.screens.components.graph.LineChart
+import com.thor.swim.tracker.screens.components.graph.NumberEntryUi
+import com.thor.swim.tracker.screens.components.graph.dataStore
 import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -35,7 +35,7 @@ fun HomeScreen(
 ) {
     val entries by viewModel.entries.collectAsState(initial = emptyList())
 
-    val RANGE_KEY = stringPreferencesKey("chart_range")
+    val rangedKeys = stringPreferencesKey("chart_range")
 
     Column(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun HomeScreen(
         val appContext = LocalContext.current.applicationContext
         val lastRange by remember {
             appContext.dataStore.data.map { prefs ->
-                prefs[RANGE_KEY] // returns String? (or whatever type RANGE_KEY stores)
+                prefs[rangedKeys]
             }
         }.collectAsState(initial = null)
 
@@ -58,9 +58,6 @@ fun HomeScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
-
-//        Text(text = lastRange ?: "")
-
         Spacer(modifier = Modifier.height(12.dp))
 
         val filteredEntries = when (lastRange) {
@@ -121,48 +118,18 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-//                .background(Color.LightGray)
         ) {
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = onNavigate
             ) {
-                Text(stringResource(R.string.add_swim))
+                Text(stringResource(R.string.add_a_swim))
             }
-
-//            Button(onClick = { viewModel.addTestfilteredEntries() }) {
-//                Text("Add Test filteredEntries")
-//            }
         }
     }
 
 
     val context = LocalContext.current
-//    Button(onClick = {
-//        com.thor.swimtracker.notifications.NotificationHelper.ensureChannel(context)
-//        com.thor.swimtracker.notifications.NotificationHelper.sendNow(
-//            context,
-//            "Test from Home",
-//            "If you see this, notifications work 🎉"
-//        )
-//    }) { Text("Post test notification now") }
-//
-//    val now = java.util.Calendar.getInstance()
-//    val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
-//    val currentMinute = now.get(java.util.Calendar.MINUTE)
-//
-//    for (i in 0..9) {
-//        val targetMinute = (currentMinute + i) % 60
-//        val targetHour = (currentHour + (currentMinute + i) / 60) % 24
-//
-//        scheduleNotificationAt(
-//            context,
-//            targetHour,
-//            targetMinute,
-//            "the fukcing title?",
-//            "do it work!"
-//        )
-//    }
     scheduleNotificationAt(
         context, 12,
         0,

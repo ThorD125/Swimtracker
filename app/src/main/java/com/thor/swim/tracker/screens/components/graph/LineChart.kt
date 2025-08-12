@@ -1,4 +1,4 @@
-package com.thor.swimtracker.screens.components.graph
+package com.thor.swim.tracker.screens.components.graph
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*

@@ -1,4 +1,4 @@
-package com.thor.swimtracker.data
+package com.thor.swim.tracker.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,0 +1,49 @@
+package com.thor.swim.tracker.screens
+
+import android.annotation.SuppressLint
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.thor.swim.tracker.data.NumberViewModel
+import com.thor.swim.tracker.notifications.NotificationHelper
+import com.thor.swim.tracker.notifications.scheduleNotificationAt
+
+@SuppressLint("MissingPermission")
+@Composable
+fun TestScreen(
+    viewModel: NumberViewModel = viewModel(),
+    onBack: () -> Unit,
+) {
+    Button(onClick = { viewModel.addTestEntries() }) {
+        Text("Add Test filteredEntries")
+    }
+
+    val context = LocalContext.current
+    Button(onClick = @androidx.annotation.RequiresPermission(android.Manifest.permission.POST_NOTIFICATIONS) {
+        NotificationHelper.ensureChannel(context)
+        NotificationHelper.sendNow(
+            context,
+            "Test from Home",
+            "If you see this, notifications work 🎉"
+        )
+    }) { Text("Post test notification now") }
+
+    val now = java.util.Calendar.getInstance()
+    val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
+    val currentMinute = now.get(java.util.Calendar.MINUTE)
+
+    for (i in 0..9) {
+        val targetMinute = (currentMinute + i) % 60
+        val targetHour = (currentHour + (currentMinute + i) / 60) % 24
+
+        scheduleNotificationAt(
+            context,
+            targetHour,
+            targetMinute,
+            "the fucking title?",
+            "do it work!"
+        )
+    }
+}
