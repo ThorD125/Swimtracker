@@ -46,9 +46,7 @@ fun AddSwimScreen(
     val todayEntry by viewModel.entryForDate(today).collectAsState(initial = null)
 
     LaunchedEffect(todayEntry) {
-        if (todayEntry != null && numberText.isEmpty()) {
-            numberText = todayEntry?.value?.toString() ?: ""
-        }
+        numberText = todayEntry?.value?.toString() ?: "0"
     }
 
     Column(
