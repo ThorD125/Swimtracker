@@ -1,6 +1,5 @@
 package com.thor.swim.tracker.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,11 +27,7 @@ import com.thor.swim.tracker.screens.components.graph.LineChart
 import com.thor.swim.tracker.screens.components.graph.NumberEntryUi
 import com.thor.swim.tracker.screens.components.graph.dataStore
 import kotlinx.coroutines.flow.map
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -70,18 +65,14 @@ fun HomeScreen(
             ChartRange.MONTH.key -> {
                 val cutoff = LocalDate.now().minusDays(30)
                 entries.filter { entry ->
-                    val entryDate =
-                        LocalDate.parse(entry.date, DateTimeFormatter.ofPattern("dd_MM_yyyy"))
-                    entryDate.isAfter(cutoff) || entryDate.isEqual(cutoff)
+                    entry.date.isAfter(cutoff) || entry.date.isEqual(cutoff)
                 }
             }
 
             ChartRange.WEEK.key -> {
                 val cutoff = LocalDate.now().minusDays(7)
                 entries.filter { entry ->
-                    val entryDate =
-                        LocalDate.parse(entry.date, DateTimeFormatter.ofPattern("dd_MM_yyyy"))
-                    entryDate.isAfter(cutoff) || entryDate.isEqual(cutoff)
+                    entry.date.isAfter(cutoff) || entry.date.isEqual(cutoff)
                 }
             }
 
@@ -152,13 +143,9 @@ fun HomeScreen(
 
     LaunchedEffect(entries) {
         if (entries.isNotEmpty()) {
-            Log.d("MyTag", entries.toString())
-            val lastentry = entries.sortedBy { it.date }.last().date
-            val today = SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(Date())
-            Log.d("MyTag", today)
-            Log.d("MyTag", lastentry)
-            Log.d("MyTag", (lastentry == today).toString())
-            if (lastentry == today) {
+            val lastEntry = entries.maxByOrNull { it.date }!!.date
+            val today = LocalDate.now()
+            if (lastEntry == today) {
                 cancelScheduledNotification(context, 12, 0)
                 cancelScheduledNotification(context, 19, 0)
                 scheduleNotificationAt(

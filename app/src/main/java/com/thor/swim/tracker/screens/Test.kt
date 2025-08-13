@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thor.swim.tracker.data.NumberViewModel
-import com.thor.swim.tracker.notifications.NotificationHelper
 import com.thor.swim.tracker.notifications.cancelScheduledNotification
 import com.thor.swim.tracker.notifications.scheduleNotificationAt
 

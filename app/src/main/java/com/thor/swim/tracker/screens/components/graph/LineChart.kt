@@ -32,11 +32,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-data class NumberEntryUi(val value: Int, val date: String)
+data class NumberEntryUi(val value: Int, val date: LocalDate)
 
 private val DateFmt = DateTimeFormatter.ofPattern("dd_MM_yyyy")
-private fun parseDate(d: String): LocalDate =
-    runCatching { LocalDate.parse(d, DateFmt) }.getOrNull() ?: LocalDate.now()
 
 enum class ChartRange(val key: String, val label: String) {
     WEEK("WEEK", "Last 7d"),
@@ -113,7 +111,7 @@ fun LineChart(
 
     val filtered = remember(entries, range) {
         if (entries.isEmpty()) emptyList() else {
-            val pts = entries.map { parseDate(it.date) to it.value }.sortedBy { it.first }
+            val pts = entries.map { it.date to it.value }.sortedBy { it.first }
             val maxDate = pts.last().first
             val cutoff = when (range!!) {
                 ChartRange.WEEK -> maxDate.minusDays(6)
@@ -121,7 +119,7 @@ fun LineChart(
                 ChartRange.ALL -> pts.first().first
             }
             pts.filter { it.first >= cutoff }
-                .map { NumberEntryUi(it.second, it.first.format(DateFmt)) }
+                .map { NumberEntryUi(it.second, it.first) }
         }
     }
 
@@ -173,7 +171,7 @@ private fun LineChartCanvas(
     labelStyle: TextStyle
 ) {
     val points = entries
-        .map { parseDate(it.date) to it.value }
+        .map { it.date to it.value }
         .sortedBy { it.first }
 
     val minDate = points.first().first

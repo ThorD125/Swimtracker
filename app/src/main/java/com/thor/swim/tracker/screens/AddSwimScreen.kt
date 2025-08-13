@@ -26,9 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.thor.swim.tracker.R
 import com.thor.swim.tracker.data.NumberViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDate
 
 @Composable
 fun AddSwimScreen(
@@ -39,7 +37,7 @@ fun AddSwimScreen(
     var navigated by remember { mutableStateOf(false) }
 
     val today = remember {
-        SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(Date())
+        LocalDate.now()
     }
 
     val todayEntry by viewModel.entryForDate(today).collectAsState(initial = null)
@@ -104,8 +102,7 @@ fun AddSwimScreen(
 
                 val value = numberText.toIntOrNull()
                 if (value != null) {
-                    val currentDate = SimpleDateFormat("dd_MM_yyyy", Locale.getDefault())
-                        .format(Date())
+                    val currentDate = LocalDate.now()
                     viewModel.save(value, currentDate)
                 }
 
