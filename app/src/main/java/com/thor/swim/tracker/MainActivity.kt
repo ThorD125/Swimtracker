@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController = navController,
                         startDestination = stringResource(R.string.screen_home),
-//                        startDestination = stringResource(R.screens.test),
+//                        startDestination = stringResource(R.string.screen_test),
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(getString(R.string.screen_home)) {
@@ -42,9 +42,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(getString(R.string.screen_test)) {
-                            TestScreen(
-                                onBack = { navController.popBackStack() }
-                            )
+                            TestScreen()
                         }
                     }
                 }

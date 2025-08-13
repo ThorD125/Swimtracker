@@ -1,5 +1,6 @@
 package com.thor.swim.tracker.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -19,14 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.thor.swim.tracker.R
 import com.thor.swim.tracker.data.NumberViewModel
+import com.thor.swim.tracker.notifications.cancelScheduledNotification
 import com.thor.swim.tracker.notifications.scheduleNotificationAt
 import com.thor.swim.tracker.screens.components.graph.ChartRange
 import com.thor.swim.tracker.screens.components.graph.LineChart
 import com.thor.swim.tracker.screens.components.graph.NumberEntryUi
 import com.thor.swim.tracker.screens.components.graph.dataStore
 import kotlinx.coroutines.flow.map
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -144,4 +150,33 @@ fun HomeScreen(
         stringResource(R.string.notification_message)
     )
 
+    LaunchedEffect(entries) {
+        if (entries.isNotEmpty()) {
+            Log.d("MyTag", entries.toString())
+            val lastentry = entries.sortedBy { it.date }.last().date
+            val today = SimpleDateFormat("dd_MM_yyyy", Locale.getDefault()).format(Date())
+            Log.d("MyTag", today)
+            Log.d("MyTag", lastentry)
+            Log.d("MyTag", (lastentry == today).toString())
+            if (lastentry == today) {
+                cancelScheduledNotification(context, 12, 0)
+                cancelScheduledNotification(context, 19, 0)
+                scheduleNotificationAt(
+                    context, 12,
+                    0,
+                    R.string.notification_title.toString(),
+                    R.string.notification_message.toString(),
+                    true
+                )
+                scheduleNotificationAt(
+                    context,
+                    19,
+                    0,
+                    R.string.notification_title.toString(),
+                    R.string.notification_message.toString(),
+                    true
+                )
+            }
+        }
+    }
 }

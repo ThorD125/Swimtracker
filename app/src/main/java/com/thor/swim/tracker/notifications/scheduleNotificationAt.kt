@@ -9,10 +9,17 @@ import android.os.Build
 import android.provider.Settings
 import androidx.core.net.toUri
 
-fun scheduleNotificationAt(context: Context, hour: Int, minute: Int, title: String, text: String) {
+fun scheduleNotificationAt(
+    context: Context,
+    hour: Int,
+    minute: Int,
+    title: String,
+    text: String,
+    forceTomorrow: Boolean = false // optional parameter
+) {
     val am = context.getSystemService(AlarmManager::class.java)
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S /* 31 */ &&
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
         !am.canScheduleExactAlarms()
     ) {
         val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
@@ -29,7 +36,10 @@ fun scheduleNotificationAt(context: Context, hour: Int, minute: Int, title: Stri
         set(Calendar.MINUTE, minute)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
-        if (before(Calendar.getInstance())) add(Calendar.DAY_OF_MONTH, 1)
+
+        if (forceTomorrow || before(Calendar.getInstance())) {
+            add(Calendar.DAY_OF_MONTH, 1)
+        }
     }
 
     val intent = Intent(context, NotificationReceiver::class.java).apply {
@@ -45,4 +55,23 @@ fun scheduleNotificationAt(context: Context, hour: Int, minute: Int, title: Stri
     )
 
     am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pi)
+}
+
+fun cancelScheduledNotification(context: Context, hour: Int, minute: Int) {
+    val am = context.getSystemService(AlarmManager::class.java)
+
+    val intent = Intent(context, NotificationReceiver::class.java)
+
+    val pi = PendingIntent.getBroadcast(
+        context,
+        hour * 100 + minute,
+        intent,
+        PendingIntent.FLAG_NO_CREATE or
+                PendingIntent.FLAG_IMMUTABLE
+    )
+
+    if (pi != null) {
+        am.cancel(pi)
+        pi.cancel()
+    }
 }
