@@ -18,6 +18,10 @@ fun TestScreen(
     Button(onClick = { viewModel.addTestEntries() }) {
         Text("Add Test filteredEntries")
     }
+    
+    Button(onClick = { viewModel.addPreviousWeakEntries() }) {
+        Text("Add Test addPreviousWeakEntries")
+    }
 
     val context = LocalContext.current
 //    Button(onClick = {
@@ -33,25 +37,29 @@ fun TestScreen(
     val currentHour = now.get(java.util.Calendar.HOUR_OF_DAY)
     val currentMinute = now.get(java.util.Calendar.MINUTE)
 
-    for (i in 0..10) {
-        val targetMinute = (currentMinute + i) % 60
-        val targetHour = (currentHour + (currentMinute + i) / 60) % 24
+    val i = 0
+//    for (i in 0..10) {
 
-        scheduleNotificationAt(
-            context,
-            targetHour,
-            targetMinute,
-            "the fucking title?",
-            "do it work!"
-        )
-    }
+    val targetMinute = (currentMinute + i) % 60
+    val targetHour = (currentHour + (currentMinute + i) / 60) % 24
+
+    scheduleNotificationAt(
+        context,
+        0,
+        targetHour,
+        targetMinute,
+        "the fucking title?",
+        "do it work!"
+    )
+
+//    }
     // We scheduled for i in 0..10; cancel the odd ones (1,3,5,...)
     for (i in 0..10) {
-        if (i % 2 == 1) {
-            val targetMinute = (currentMinute + i) % 60
-            val targetHour = (currentHour + (currentMinute + i) / 60) % 24
-            cancelScheduledNotification(context, targetHour, targetMinute)
-        }
+//        if (i % 2 == 1) {
+        val targetMinute = (currentMinute + i) % 60
+        val targetHour = (currentHour + (currentMinute + i) / 60) % 24
+        cancelScheduledNotification(context, targetHour, targetMinute)
+//        }
     }
 
 }

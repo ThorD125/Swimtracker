@@ -7,15 +7,17 @@ import android.content.Intent
 import java.util.Calendar
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.core.net.toUri
+import java.util.Locale
 
 fun scheduleNotificationAt(
     context: Context,
+    day: Int,
     hour: Int,
     minute: Int,
     title: String,
     text: String,
-    forceTomorrow: Boolean = false // optional parameter
 ) {
     val am = context.getSystemService(AlarmManager::class.java)
 
@@ -37,10 +39,20 @@ fun scheduleNotificationAt(
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
 
-        if (forceTomorrow || before(Calendar.getInstance())) {
+        add(Calendar.DAY_OF_MONTH, day)
+
+        if (get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            add(Calendar.DAY_OF_MONTH, 1)
+        }
+        if (get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             add(Calendar.DAY_OF_MONTH, 1)
         }
     }
+
+    Log.d("scheduleNotificationAt", "cal: $cal")
+    val dayOfWeekShort =
+        cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())
+    Log.d("MyTag", "Scheduled notification at ${cal.time} ($dayOfWeekShort)")
 
     val intent = Intent(context, NotificationReceiver::class.java).apply {
         putExtra("title", title)

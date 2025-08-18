@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Calendar
+import java.time.ZoneId
 
 class NumberViewModel(app: Application) : AndroidViewModel(app) {
     private val dao = AppDb.get(app).numberDao()
@@ -29,9 +30,25 @@ class NumberViewModel(app: Application) : AndroidViewModel(app) {
                 cal.timeInMillis = System.currentTimeMillis()
                 cal.add(Calendar.DAY_OF_YEAR, -i)
                 val date: LocalDate =
-                    cal.time.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()
+                    cal.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                 dao.upsert(NumberEntry(value = i + 10, date = date))
             }
         }
     }
+
+    fun addPreviousWeakEntries() {
+        viewModelScope.launch {
+            val dates = listOf(
+                LocalDate.of(2025, 8, 11),
+                LocalDate.of(2025, 8, 12),
+                LocalDate.of(2025, 8, 13),
+                LocalDate.of(2025, 8, 14)
+            )
+
+            dates.forEach { date ->
+                dao.upsert(NumberEntry(value = 50, date = date))
+            }
+        }
+    }
+
 }

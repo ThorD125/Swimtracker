@@ -127,19 +127,24 @@ fun HomeScreen(
 
 
     val context = LocalContext.current
-    scheduleNotificationAt(
-        context, 12,
-        0,
-        stringResource(R.string.notification_title),
-        stringResource(R.string.notification_message)
-    )
-    scheduleNotificationAt(
-        context,
-        19,
-        0,
-        stringResource(R.string.notification_title),
-        stringResource(R.string.notification_message)
-    )
+    for (i in 0..3) {
+        scheduleNotificationAt(
+            context,
+            i,
+            12,
+            0,
+            stringResource(R.string.notification_title),
+            stringResource(R.string.notification_message)
+        )
+        scheduleNotificationAt(
+            context,
+            i,
+            19,
+            0,
+            stringResource(R.string.notification_title),
+            stringResource(R.string.notification_message)
+        )
+    }
 
     LaunchedEffect(entries) {
         if (entries.isNotEmpty()) {
@@ -148,21 +153,6 @@ fun HomeScreen(
             if (lastEntry == today) {
                 cancelScheduledNotification(context, 12, 0)
                 cancelScheduledNotification(context, 19, 0)
-                scheduleNotificationAt(
-                    context, 12,
-                    0,
-                    R.string.notification_title.toString(),
-                    R.string.notification_message.toString(),
-                    true
-                )
-                scheduleNotificationAt(
-                    context,
-                    19,
-                    0,
-                    R.string.notification_title.toString(),
-                    R.string.notification_message.toString(),
-                    true
-                )
             }
         }
     }
