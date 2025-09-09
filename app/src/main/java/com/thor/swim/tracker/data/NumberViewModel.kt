@@ -42,11 +42,20 @@ class NumberViewModel(app: Application) : AndroidViewModel(app) {
                 LocalDate.of(2025, 8, 11),
                 LocalDate.of(2025, 8, 12),
                 LocalDate.of(2025, 8, 13),
-                LocalDate.of(2025, 8, 14)
+                LocalDate.of(2025, 8, 14),
+                LocalDate.of(2025, 8, 15),
+                LocalDate.of(2025, 8, 18),
+                LocalDate.of(2025, 8, 19),
+                LocalDate.of(2025, 8, 20),
+                LocalDate.of(2025, 8, 21),
+                LocalDate.of(2025, 8, 22),
+                LocalDate.of(2025, 8, 25),
+                LocalDate.of(2025, 9, 8),
+//                LocalDate.of(2025, 9, 9),
             )
 
             dates.forEach { date ->
-                dao.upsert(NumberEntry(value = 50, date = date))
+                dao.upsert(NumberEntry(value = 60, date = date))
             }
         }
     }

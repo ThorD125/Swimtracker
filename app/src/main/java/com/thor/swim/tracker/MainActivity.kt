@@ -1,5 +1,8 @@
 package com.thor.swim.tracker
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,8 +30,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = stringResource(R.string.screen_home),
-//                        startDestination = stringResource(R.string.screen_test),
+//                        startDestination = stringResource(R.string.screen_home),
+                        startDestination = stringResource(R.string.screen_test),
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         composable(getString(R.string.screen_home)) {

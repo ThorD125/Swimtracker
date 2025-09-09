@@ -1,37 +1,21 @@
 package com.thor.swim.tracker.notifications
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import java.util.Calendar
-import android.os.Build
-import android.provider.Settings
 import android.util.Log
-import androidx.core.net.toUri
-import java.util.Locale
+import androidx.work.*
+import java.time.Month
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 fun scheduleNotificationAt(
     context: Context,
+    month: Int,
     day: Int,
     hour: Int,
     minute: Int,
     title: String,
     text: String,
 ) {
-    val am = context.getSystemService(AlarmManager::class.java)
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
-        !am.canScheduleExactAlarms()
-    ) {
-        val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-            data = "package:${context.packageName}".toUri()
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-        context.startActivity(intent)
-        return
-    }
-
     val cal = Calendar.getInstance().apply {
         timeInMillis = System.currentTimeMillis()
         set(Calendar.HOUR_OF_DAY, hour)
@@ -39,6 +23,7 @@ fun scheduleNotificationAt(
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
 
+        add(Calendar.MONTH, month)
         add(Calendar.DAY_OF_MONTH, day)
 
         if (get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
@@ -49,41 +34,40 @@ fun scheduleNotificationAt(
         }
     }
 
-    Log.d("scheduleNotificationAt", "cal: $cal")
-    val dayOfWeekShort =
-        cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault())
-    Log.d("MyTag", "Scheduled notification at ${cal.time} ($dayOfWeekShort)")
-
-    val intent = Intent(context, NotificationReceiver::class.java).apply {
-        putExtra("title", title)
-        putExtra("text", text)
+    val delay = cal.timeInMillis - System.currentTimeMillis()
+    if (delay <= 0) {
+        Log.w("scheduleNotificationAt", "Scheduled time already passed, skipping")
+        return
     }
 
-    val pi = PendingIntent.getBroadcast(
-        context,
-        hour * 100 + minute,
-        intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    val data = workDataOf(
+        "title" to title,
+        "text" to text
     )
 
-    am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pi)
+    val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+        .setInputData(data)
+        .addTag("notif_${cal.get(Calendar.MONTH)}_${cal.get(Calendar.DAY_OF_MONTH)}_${hour}_${minute}") // use tag for cancellation/listing
+        .build()
+
+    WorkManager.getInstance(context).enqueue(request)
+
+    Log.d("scheduleNotification", "Scheduled notification at ${cal.time}")
 }
 
-fun cancelScheduledNotification(context: Context, hour: Int, minute: Int) {
-    val am = context.getSystemService(AlarmManager::class.java)
+fun cancelScheduledNotification(context: Context, month: Int, day: Int, hour: Int, minute: Int) {
+    val tag = "notif_${month}_${day}_${hour}_${minute}"
+    WorkManager.getInstance(context).cancelAllWorkByTag(tag)
+    Log.d("scheduleNotificationcancel", "Cancelled notification with tag $tag")
+}
 
-    val intent = Intent(context, NotificationReceiver::class.java)
-
-    val pi = PendingIntent.getBroadcast(
-        context,
-        hour * 100 + minute,
-        intent,
-        PendingIntent.FLAG_NO_CREATE or
-                PendingIntent.FLAG_IMMUTABLE
-    )
-
-    if (pi != null) {
-        am.cancel(pi)
-        pi.cancel()
+fun listScheduledNotifications(context: Context) {
+    val workInfos = WorkManager.getInstance(context)
+        .getWorkInfosByTag("notif") // or fetch all then filter
+        .get()
+    Log.d("listScheduledNotifications", "Work: info.id, state=info.state")
+    for (info in workInfos) {
+        Log.d("listScheduledNotifications", "Work: ${info.id}, state=${info.state}")
     }
 }

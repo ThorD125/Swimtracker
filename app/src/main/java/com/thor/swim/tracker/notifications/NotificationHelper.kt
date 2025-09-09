@@ -4,9 +4,11 @@ import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.work.WorkManager
 import com.thor.swim.tracker.MainActivity
 import com.thor.swim.tracker.R
 

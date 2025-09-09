@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
 
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.work.runtime.ktx)
 
     ksp(libs.androidx.room.compiler)
 

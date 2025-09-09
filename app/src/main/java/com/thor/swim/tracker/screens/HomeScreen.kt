@@ -1,5 +1,9 @@
 package com.thor.swim.tracker.screens
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -127,9 +131,19 @@ fun HomeScreen(
 
 
     val context = LocalContext.current
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel(
+            "swim_channel",
+            "Swim Notifications",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        val manager = context.getSystemService(NotificationManager::class.java)
+        manager.createNotificationChannel(channel)
+    }
     for (i in 0..3) {
         scheduleNotificationAt(
             context,
+            0,
             i,
             12,
             0,
@@ -138,6 +152,7 @@ fun HomeScreen(
         )
         scheduleNotificationAt(
             context,
+            0,
             i,
             19,
             0,
@@ -150,9 +165,13 @@ fun HomeScreen(
         if (entries.isNotEmpty()) {
             val lastEntry = entries.maxByOrNull { it.date }!!.date
             val today = LocalDate.now()
+//            Log.d("HomeScreenLaunch", "today: $today")
+//            Log.d("HomeScreenLaunch", "lastEntry: $lastEntry")
+            val day = today.dayOfMonth   // int (1–31)
+            val month = today.monthValue
             if (lastEntry == today) {
-                cancelScheduledNotification(context, 12, 0)
-                cancelScheduledNotification(context, 19, 0)
+                cancelScheduledNotification(context, month, day, 12, 0)
+                cancelScheduledNotification(context, month, day, 19, 0)
             }
         }
     }
