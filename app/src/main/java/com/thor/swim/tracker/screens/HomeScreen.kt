@@ -3,7 +3,6 @@ package com.thor.swim.tracker.screens
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -165,9 +164,7 @@ fun HomeScreen(
         if (entries.isNotEmpty()) {
             val lastEntry = entries.maxByOrNull { it.date }!!.date
             val today = LocalDate.now()
-//            Log.d("HomeScreenLaunch", "today: $today")
-//            Log.d("HomeScreenLaunch", "lastEntry: $lastEntry")
-            val day = today.dayOfMonth   // int (1–31)
+            val day = today.dayOfMonth
             val month = today.monthValue
             if (lastEntry == today) {
                 cancelScheduledNotification(context, month, day, 12, 0)

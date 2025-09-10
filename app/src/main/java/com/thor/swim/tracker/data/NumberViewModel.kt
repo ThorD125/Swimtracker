@@ -51,7 +51,7 @@ class NumberViewModel(app: Application) : AndroidViewModel(app) {
                 LocalDate.of(2025, 8, 22),
                 LocalDate.of(2025, 8, 25),
                 LocalDate.of(2025, 9, 8),
-//                LocalDate.of(2025, 9, 9),
+                LocalDate.of(2025, 9, 9),
             )
 
             dates.forEach { date ->

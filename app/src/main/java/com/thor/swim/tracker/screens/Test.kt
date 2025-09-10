@@ -3,14 +3,12 @@ package com.thor.swim.tracker.screens
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.os.Build
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.thor.swim.tracker.data.NumberViewModel
-import com.thor.swim.tracker.notifications.NotificationHelper
 import com.thor.swim.tracker.notifications.cancelScheduledNotification
 import com.thor.swim.tracker.notifications.listScheduledNotifications
 import com.thor.swim.tracker.notifications.scheduleNotificationAt
@@ -26,28 +24,26 @@ fun TestScreen(
 //        Text("Add Test filteredEntries")
 //    }
 
-//    Button(onClick = { viewModel.addPreviousWeakEntries() }) {
-//        Text("Add Test addPreviousWeakEntries")
-//    }
-    val context = LocalContext.current
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(
-            "swim_channel",
-            "Swim Notifications",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        val manager = context.getSystemService(NotificationManager::class.java)
-        manager.createNotificationChannel(channel)
+    Button(onClick = { viewModel.addPreviousWeakEntries() }) {
+        Text("Add Test addPreviousWeakEntries")
     }
+    val context = LocalContext.current
+    val channel = NotificationChannel(
+        "swim_channel",
+        "Swim Notifications",
+        NotificationManager.IMPORTANCE_HIGH
+    )
+    val manager = context.getSystemService(NotificationManager::class.java)
+    manager.createNotificationChannel(channel)
 
-    Button(onClick = {
-        NotificationHelper.ensureChannel(context)
-        NotificationHelper.sendNow(
-            context,
-            "Test from Home",
-            "If you see this, notifications work 🎉"
-        )
-    }) { Text("Post test notification now") }
+//    Button(onClick = {
+//        NotificationHelper.ensureChannel(context)
+//        NotificationHelper.sendNow(
+//            context,
+//            "Test from Home",
+//            "If you see this, notifications work 🎉"
+//        )
+//    }) { Text("Post test notification now") }
 
     val now = Calendar.getInstance()
     val currentHour = now.get(Calendar.HOUR_OF_DAY)

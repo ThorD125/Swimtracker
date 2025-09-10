@@ -3,7 +3,6 @@ package com.thor.swim.tracker.notifications
 import android.content.Context
 import android.util.Log
 import androidx.work.*
-import java.time.Month
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -45,28 +44,36 @@ fun scheduleNotificationAt(
         "text" to text
     )
 
-    val request = OneTimeWorkRequestBuilder<NotificationWorker>()
-        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-        .setInputData(data)
-        .addTag("notif_${cal.get(Calendar.MONTH)}_${cal.get(Calendar.DAY_OF_MONTH)}_${hour}_${minute}") // use tag for cancellation/listing
-        .build()
+    val tagname =
+        "notif_${cal.get(Calendar.MONTH)}_${cal.get(Calendar.DAY_OF_MONTH)}_${hour}_${minute}"
 
-    WorkManager.getInstance(context).enqueue(request)
+    val workInfos = WorkManager.getInstance(context)
+        .getWorkInfosByTag(tagname)
+        .get()
 
-    Log.d("scheduleNotification", "Scheduled notification at ${cal.time}")
+    val anyEnqueued = workInfos.any { it.state == WorkInfo.State.ENQUEUED }
+
+    if (!anyEnqueued) {
+        val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+            .setInputData(data)
+            .addTag(tagname)
+            .build()
+
+        WorkManager.getInstance(context).enqueue(request)
+    }
 }
 
 fun cancelScheduledNotification(context: Context, month: Int, day: Int, hour: Int, minute: Int) {
     val tag = "notif_${month}_${day}_${hour}_${minute}"
     WorkManager.getInstance(context).cancelAllWorkByTag(tag)
-    Log.d("scheduleNotificationcancel", "Cancelled notification with tag $tag")
 }
 
 fun listScheduledNotifications(context: Context) {
     val workInfos = WorkManager.getInstance(context)
-        .getWorkInfosByTag("notif") // or fetch all then filter
+        .getWorkInfosByTag("notif")
         .get()
-    Log.d("listScheduledNotifications", "Work: info.id, state=info.state")
+
     for (info in workInfos) {
         Log.d("listScheduledNotifications", "Work: ${info.id}, state=${info.state}")
     }
