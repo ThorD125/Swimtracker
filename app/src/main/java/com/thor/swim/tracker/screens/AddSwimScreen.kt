@@ -104,6 +104,14 @@ fun AddSwimScreen(
                 if (value != null) {
                     val currentDate = LocalDate.now()
                     viewModel.save(value, currentDate)
+            val lastEntry = entries.maxByOrNull { it.date }!!.date
+            val today = LocalDate.now()
+            val day = today.dayOfMonth
+            val month = today.monthValue
+            if (lastEntry == today) {
+                cancelScheduledNotification(context, month, day, 12, 0)
+                cancelScheduledNotification(context, month, day, 19, 0)
+            }
                 }
 
                 onBack()
